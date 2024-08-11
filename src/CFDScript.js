@@ -1,12 +1,12 @@
-//    ____   _____   ____      _____                 __                    //
-//   / ___) |  ___) |  _ \    / ____)               (__)             _     //
-//  | |     | |___  | | \ \  | (___     ____   ___   __    ____    _| |_   //
-//  | |     |  ___) | |  ) )  \___ \   / ___) |  _) |  |  |  _ \  |_   _)  //
-//  | |___  | |     | |_/ /   ____) ) | |___  | /   |  |  | |_) )   | |    //
-//   \____) |_|     |____/   |_____/   \____) |/    |__|  |  __/    | |    //
-//                                                        | |       | |    //
-//                                                        |_|       | |_   //
-//   Website:  www.cfdscript.com                                    \ __\  //
+//   _____   _____               _____                 _                    //
+//  |  ___) |  ___)     /\      /  ___)               (_)             _     //
+//  | |___  | |___     /  \    | (___     ____   ___   _    ____    _| |_   // 
+//  |  ___) |  ___)   / /\ \    \___ \   / ___) |  _) | |  |  _ \  |_   _)  // 
+//  | |     | |___   / ____ \   ____) ) | |___  | /   | |  | |_) )   | |    // 
+//  |_|     |_____) /_/    \_\ |_____/   \____) |/    |_|  |  __/    | |    // 
+//                                                         | |       | |    //
+//                                                         |_|       | |    //
+//        Website:  www.feacript.com                                 \ __\  //
 
 import { createSolidHeatMat2D } from "./solvers/solidHeatScript.js";
 
@@ -17,7 +17,7 @@ import { createSolidHeatMat2D } from "./solvers/solidHeatScript.js";
  * @param {*} boundaryConditions - Object containing boundary conditions
  * @returns
  */
-export function CFDScript(solverScript, meshConfig, boundaryConditions) {
+export function FEAScript(solverScript, meshConfig, boundaryConditions) {
   let jacobianMatrix = []; // Jacobian matrix
   let residualVector = []; // Galerkin residuals
   let totalNodesX; // Total number of nodes along x-axis

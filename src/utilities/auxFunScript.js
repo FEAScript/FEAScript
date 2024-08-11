@@ -1,12 +1,12 @@
-//    ____   _____   ____      _____                 __                    //
-//   / ___) |  ___) |  _ \    / ____)               (__)             _     //
-//  | |     | |___  | | \ \  | (___     ____   ___   __    ____    _| |_   //
-//  | |     |  ___) | |  ) )  \___ \   / ___) |  _) |  |  |  _ \  |_   _)  //
-//  | |___  | |     | |_/ /   ____) ) | |___  | /   |  |  | |_) )   | |    //
-//   \____) |_|     |____/   |_____/   \____) |/    |__|  |  __/    | |    //
-//                                                        | |       | |    //
-//                                                        |_|       | |_   //
-//   Website:  www.cfdscript.com                                    \ __\  //
+//   _____   _____               _____                 _                    //
+//  |  ___) |  ___)     /\      /  ___)               (_)             _     //
+//  | |___  | |___     /  \    | (___     ____   ___   _    ____    _| |_   // 
+//  |  ___) |  ___)   / /\ \    \___ \   / ___) |  _) | |  |  _ \  |_   _)  // 
+//  | |     | |___   / ____ \   ____) ) | |___  | /   | |  | |_) )   | |    // 
+//  |_|     |_____) /_/    \_\ |_____/   \____) |/    |_|  |  __/    | |    // 
+//                                                         | |       | |    //
+//                                                         |_|       | |    //
+//        Website:  www.feacript.com                                 \ __\  //
 
 /**
  * Check if only one boundary conditions is applied to each side of the domain for the solidHeatScript solver
@@ -51,8 +51,8 @@ export function chkSolidHeatboundaryConditions(boundaryConditions) {
 }
 
 /**
- * Print the CFDScript version
+ * Print the FEAScript version
  */
 export function CFDScriptVersion() {
-  console.log("CFDscript version:", new Date().getFullYear());
+  console.log("FEAScript version:", new Date().getFullYear());
 }
