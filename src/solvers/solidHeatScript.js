@@ -6,7 +6,7 @@
 //  |_|    |______/_/    \_\_____/ \___|_|  |_|  __/| |    //
 //                                            | |   | |    //
 //                                            |_|   | |_   //
-//       Website:  www.feacript.com                  \__|  //
+//       Website: https://feascript.com/             \__|  //
 
 import { genStructMesh2D, nodNumStruct2D } from "../mesh/genMeshScript.js";
 import { basisFunQuad2D } from "../mesh/basisFunScript.js";
