@@ -10,7 +10,7 @@
 
 /**
  * Check if only one boundary conditions is applied to each side of the domain for the solidHeatScript solver
- * @param {Object} boundaryConditions - An object representing the applied boundary conditions
+ * @param {object} boundaryConditions - An object representing the applied boundary conditions
  */
 export function chkSolidHeatboundaryConditions(boundaryConditions) {
   const boundaryConditionCounts = {
@@ -51,8 +51,11 @@ export function chkSolidHeatboundaryConditions(boundaryConditions) {
 }
 
 /**
- * Print the FEAScript version
+ * Print the FEAScript version and copyright note
  */
 export function CFDScriptVersion() {
-  console.log("FEAScript version:", new Date().getFullYear());
+  console.log(
+    "FEAScript: An open-source JavaScript library for solving differential equations using the finite element method. Distributed under MIT license. Copyright (c)",
+    new Date().getFullYear()
+  );
 }

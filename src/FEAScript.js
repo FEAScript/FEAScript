@@ -12,9 +12,9 @@ import { createSolidHeatMat2D } from "./solvers/solidHeatScript.js";
 
 /**
  * Differential equations solver using the finite element method
- * @param {*} solverScript - Parameter specifying the type of solver
- * @param {*} meshConfig - Object containing computational mesh details
- * @param {*} boundaryConditions - Object containing boundary conditions
+ * @param {string} solverScript - Parameter specifying the type of solver
+ * @param {object} meshConfig - Object containing computational mesh details
+ * @param {object} boundaryConditions - Object containing boundary conditions
  * @returns
  */
 export function FEAScript(solverScript, meshConfig, boundaryConditions) {

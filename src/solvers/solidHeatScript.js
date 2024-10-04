@@ -8,13 +8,14 @@
 //                                            |_|   | |_   //
 //       Website: https://feascript.com/             \__|  //
 
-import { genStructMesh2D, nodNumStruct2D } from "../mesh/genMeshScript.js";
+import { nodNumStruct2D } from "../mesh/genMeshScript.js";
 import { basisFunQuad2D } from "../mesh/basisFunScript.js";
+import { Mesh } from "../mesh/genMeshScript.js";
 
 /**
  * Generate the matrix and the residual vector for the Finite Element Method in two dimensions
- * @param {*} meshConfig - Object containing computational mesh details
- * @param {*} boundaryConditions - Object containing boundary conditions
+ * @param {object} meshConfig - Object containing computational mesh details
+ * @param {object} boundaryConditions - Object containing boundary conditions
  * @returns
  */
 export function createSolidHeatMat2D(meshConfig, boundaryConditions) {
@@ -26,11 +27,23 @@ export function createSolidHeatMat2D(meshConfig, boundaryConditions) {
     maxY, // Max y-coordinate (m) of the domain
   } = meshConfig;
 
-  // Generate x-y coordinates using genStructMesh2D function
-  let { nodeXCoordinates, nodeYCoordinates, totalNodesX, totalNodesY } =
-    genStructMesh2D(numElementsX, numElementsY, maxX, maxY);
+  // Create a new instance of the Mesh class for 2D mesh generation
+  const mesh2D = new Mesh({
+    numElementsX,
+    numElementsY,
+    maxX,
+    maxY,
+    dimension: "2D",
+  });
 
-  // Generate nop array
+  // Generate the 2D mesh
+  const meshData2D = mesh2D.generateMesh();
+  let nodeXCoordinates = meshData2D.nodeXCoordinates;
+  let nodeYCoordinates = meshData2D.nodeYCoordinates;
+  let totalNodesX = meshData2D.totalNodesX;
+  let totalNodesY = meshData2D.totalNodesY;
+
+  // Generate NOP array
   let nop = nodNumStruct2D(
     numElementsX,
     numElementsY,
