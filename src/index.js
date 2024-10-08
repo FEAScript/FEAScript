@@ -10,5 +10,4 @@
 
 export { FEAScript } from "./FEAScript.js";
 export { plotSolution2D } from "./visualization/plotSolScript.js";
-export { chkSolidHeatboundaryConditions } from "./utilities/auxFunScript.js";
-export { CFDScriptVersion } from "./utilities/auxFunScript.js";
+export { FEAScriptVersion } from "./utilities/auxFunScript.js";
