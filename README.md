@@ -2,7 +2,7 @@
 
 ## Introduction
 
-<a href="https://www.feascript.com/" target="_blank">FEAScript</a> is an open-source JavaScript library for solving differential equations using the finite element method. It allows you to create and run browser-based simulations of physics and engineering problems.
+<a href="https://feascript.com/" target="_blank">FEAScript</a> is an open-source JavaScript library for solving differential equations using the finite element method. It allows you to create and run browser-based simulations of physics and engineering problems.
 <br>
 </br>
 FEAScript is in early-development and new features and improvements are constantly being added.
