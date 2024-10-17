@@ -16,7 +16,8 @@ export class Mesh {
    * @param {number} config.maxX - Maximum x-coordinate of the mesh
    * @param {number} [config.numElementsY=1] - Number of elements along the y-axis (default is 1 for 1D meshes)
    * @param {number} [config.maxY=0] - Maximum y-coordinate of the mesh (default is 0 for 1D meshes)
-   * @param {string} [config.dimension='2D'] - The dimension of the mesh, either '1D' or '2D' (default is '2D')
+   * @param {string} [config.dimension='2D'] - The dimension of the mesh, either 1D or 2D (default is 2D)
+   * @param {string} [config.meshFile=null] - Optional mesh file (JSON) for predefined meshes
    */
   constructor({
     numElementsX,
@@ -24,25 +25,63 @@ export class Mesh {
     numElementsY = 1,
     maxY = 0,
     dimension = "2D",
+    meshFile = null,
   }) {
-    this.numElementsX = numElementsX; // Number of elements along the x-axis
-    this.numElementsY = numElementsY; // Number of elements along the y-axis (1 for 1D, >1 for 2D)
-    this.maxX = maxX; // Maximum x-coordinate of the mesh
-    this.maxY = maxY; // Maximum y-coordinate of the mesh (only relevant for 2D meshes)
-    this.dimension = dimension; // The dimension of the mesh, either '1D' or '2D'
+    this.numElementsX = numElementsX;
+    this.numElementsY = numElementsY;
+    this.maxX = maxX;
+    this.maxY = maxY;
+    this.dimension = dimension;
+    this.meshFile = meshFile;
   }
 
   /**
-   * Generate the mesh based on the dimension ('1D' or '2D')
-   * This method decides whether to generate a 1D or 2D mesh depending on the `dimension` property
+   * Generate the mesh based on the dimension or custom mesh file
    * @returns {object} The generated mesh containing node coordinates and total nodes
    */
   generateMesh() {
-    if (this.dimension === "1D") {
-      return this.generate1DMesh(); // Generate 1D mesh if the dimension is '1D'
+    if (this.meshFile) {
+      // If a custom mesh file is provided, read and parse it
+      const meshData = this.generateMeshFromCustomFile(this.meshFile);
+      return meshData;
     } else {
-      return this.generate2DMesh(); // Generate 2D mesh if the dimension is '2D'
+      // Generate mesh based on dimension
+      if (this.dimension === "1D") {
+        return this.generate1DMesh();
+      } else {
+        return this.generate2DMesh();
+      }
     }
+  }
+
+  /**
+   * Parse a custom mesh JSON file and generate the mesh
+   * @param {string} meshFilePath - Path to the custom mesh file (JSON format)
+   * @returns {object} Mesh data containing coordinates and connectivity
+   */
+  generateMeshFromCustomFile(meshFilePath) {
+      // Fetch the JSON mesh file
+      const response = fetch(meshFilePath);
+      const meshData = response.json();
+
+      const nodeXCoordinates = [];
+      const nodeYCoordinates = [];
+      const { nodes, elements } = meshData;
+
+      // Parse the node coordinates
+      nodes.forEach((node) => {
+        nodeXCoordinates.push(node.x);
+        nodeYCoordinates.push(node.y);
+      });
+
+      // Return parsed mesh data
+      return {
+        nodeXCoordinates,
+        nodeYCoordinates,
+        totalNodesX: nodeXCoordinates.length,
+        totalNodesY: nodeYCoordinates.length,
+        elements,
+      };
   }
 
   /**
@@ -70,7 +109,7 @@ export class Mesh {
   /**
    * Generate a two-dimensional structured mesh.
    * The method creates a structured grid where nodes are placed at regular intervals along the x and y axes
-   * @returns {object} An object containing the x and y coordinates of the nodes, and the total number of nodes along the x and y axes
+   * @returns {object} An object containing the x and y coordinates and the total number of nodes
    */
   generate2DMesh() {
     // Initialize arrays and variables
@@ -114,7 +153,7 @@ export class Mesh {
  * @param {number} numElementsY - Number of elements along the y-axis
  * @param {number} totalNodesX - Total number of nodes along the x-axis
  * @param {number} totalNodesY - Total number of nodes along the y-axis
- * @returns {array} NOP - A 2D array where each row corresponds to an element and contains the node numbers connected to that element
+ * @returns {array} NOP - A 2D array which represents the element-to-node connectivity for the entire mesh
  */
 export function nodNumStruct2D(
   numElementsX,
