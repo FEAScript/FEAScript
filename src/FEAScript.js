@@ -12,12 +12,12 @@ import { assembleSolidHeatMatrix2D } from "./solvers/solidHeatScript.js";
 
 /**
  * Differential equations solver using the finite element method
- * @param {string} solverScript - Parameter specifying the type of solver
+ * @param {string} solverConfig - Parameter specifying the type of solver
  * @param {object} meshConfig - Object containing computational mesh details
  * @param {object} boundaryConditions - Object containing boundary conditions for the finite element analysis
  * @returns {object} An object containing the solution vector and additional mesh information
  */
-export function FEAScript(solverScript, meshConfig, boundaryConditions) {
+export function FEAScript(solverConfig, meshConfig, boundaryConditions) {
   let jacobianMatrix = []; // Jacobian matrix
   let residualVector = []; // Galerkin residuals
   let totalNodesX; // Total number of nodes along x-axis
@@ -28,8 +28,8 @@ export function FEAScript(solverScript, meshConfig, boundaryConditions) {
 
   // Assembly matrices
   console.time("assemblyMatrices");
-  if (solverScript === "solidHeatScript") {
-    console.log("solverScript:", solverScript);
+  if (solverConfig === "solidHeatScript") {
+    console.log("FEAScript solver:", solverConfig);
     ({
       jacobianMatrix,
       residualVector,
