@@ -1,0 +1,6 @@
+{
+  "0": ["constantTemp", 200],
+  "1": ["symmetry"],
+  "2": ["convection", 1, 20],
+  "3": ["constantTemp", 200]
+}
