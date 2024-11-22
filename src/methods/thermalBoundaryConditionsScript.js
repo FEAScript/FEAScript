@@ -12,11 +12,12 @@
  * Class to handle thermal boundary conditions application
  */
 export class ThermalBoundaryConditions {
-  constructor(boundaryConditions, boundaryElements, nop, meshDimension) {
+  constructor(boundaryConditions, boundaryElements, nop, meshDimension, elementOrder) {
     this.boundaryConditions = boundaryConditions;
     this.boundaryElements = boundaryElements;
     this.nop = nop;
     this.meshDimension = meshDimension;
+    this.elementOrder = elementOrder;
   }
 
   imposeConstantTempBoundaryConditions(residualVector, jacobianMatrix) {
