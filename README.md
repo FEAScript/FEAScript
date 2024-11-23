@@ -13,7 +13,7 @@ FEAScript is built entirely in pure JavaScript, requiring only an HTML page to r
 
 ## Contribute
 
-We are actively seeking contributors to help shape and evolve FEAScript's core. Please refer to the <a href="./CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> file for detailed instructions on how to get involved.
+We are actively seeking contributors to help evolve FEAScript's core. Please refer to the <a href="./CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> file for detailed instructions on how to get involved.
 
 ## License
 
