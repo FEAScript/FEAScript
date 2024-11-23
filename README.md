@@ -2,7 +2,7 @@
 
 ## FEAScript
 
-<a href="https://feascript.com/" target="_blank">FEAScript</a> is an open-source finite element simulation software developed in JavaScript. It allows you to create and run browser-based simulations of physics and engineering problems.
+<a href="https://feascript.com/" target="_blank">FEAScript</a> is a finite element simulation software developed in JavaScript. It allows you to create and run browser-based simulations of physics and engineering problems.
 <br>
 </br>
 🚧 FEAScript is in early development, and new features and improvements are constantly being added 🚧
@@ -13,7 +13,7 @@ FEAScript is built entirely in pure JavaScript, requiring only an HTML page to r
 
 ## Contribute
 
-We are actively looking for contributors to help evolve FEAScript. Please refer to <a href="./CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> for instructions on how to contribute.
+We are actively seeking contributors to help shape and evolve FEAScript's core. Please refer to the <a href="./CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> file for detailed instructions on how to get involved.
 
 ## License
 
