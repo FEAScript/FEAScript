@@ -1,7 +1,6 @@
 ## Contributing to FEAScript
 
-Thank you for your interest in contributing!</br>
-FEAScript is in early development with continuous addition of new features and improvements. To ensure a smooth and collaborative development process, please review and follow the guidelines.
+Thank you for your interest in contributing! FEAScript is in early development with continuous addition of new features and improvements. To ensure a smooth and collaborative development process, please review and follow the guidelines.
 
 ## Contribution Guidelines
 
@@ -9,7 +8,7 @@ FEAScript is in early development with continuous addition of new features and i
 
 1. Respect the existing FEAScript coding style. Observe the code near your intended change and attempt to preserve that style with your modifications.
 
-2. We recommend using <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a> with the <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode" target="_blank">Prettier</a> plugin for automatic code formatting.
+2. We recommend using <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a> with the <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode" target="_blank">Prettier</a> plugin for automatic code formatting. Additionally, we use a 110-character line width to maintain consistent formatting.
 
 3. Ensure that you use <a href="https://en.wikipedia.org/wiki/Camel_case" target="_blank">camelCase</a> formatting for variable names throughout the code.
 
