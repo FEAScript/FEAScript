@@ -12,6 +12,14 @@
  * Class to handle thermal boundary conditions application
  */
 export class ThermalBoundaryConditions {
+  /**
+   * Constructor to initialize the ThermalBoundaryConditions class
+   * @param {object} boundaryConditions - Object containing boundary conditions for the finite element analysis
+   * @param {array} boundaryElements - Array containing elements that belong to each boundary
+   * @param {array} nop - Nodal numbering (NOP) array representing the connectivity between elements and nodes
+   * @param {string} meshDimension - The dimension of the mesh (e.g., "2D")
+   * @param {string} elementOrder - The order of elements (e.g., "linear", "quadratic")
+   */
   constructor(boundaryConditions, boundaryElements, nop, meshDimension, elementOrder) {
     this.boundaryConditions = boundaryConditions;
     this.boundaryElements = boundaryElements;
@@ -20,6 +28,11 @@ export class ThermalBoundaryConditions {
     this.elementOrder = elementOrder;
   }
 
+  /**
+   * Impose constant temperature boundary conditions (Dirichlet type)
+   * @param {array} residualVector - The residual vector to be modified
+   * @param {array} jacobianMatrix - The Jacobian matrix to be modified
+   */
   imposeConstantTempBoundaryConditions(residualVector, jacobianMatrix) {
     if (this.meshDimension === "2D") {
       Object.keys(this.boundaryConditions).forEach((key) => {
@@ -53,6 +66,18 @@ export class ThermalBoundaryConditions {
     }
   }
 
+  /**
+   * Impose convection boundary conditions (Robin type)
+   * @param {array} residualVector - The residual vector to be modified
+   * @param {array} jacobianMatrix - The Jacobian matrix to be modified
+   * @param {array} gaussPoints - Array of Gauss points for numerical integration
+   * @param {array} gaussWeights - Array of Gauss weights for numerical integration
+   * @param {array} nodesXCoordinates - Array of x-coordinates of nodes
+   * @param {array} nodesYCoordinates - Array of y-coordinates of nodes
+   * @param {object} basisFunctionsData - Object containing basis functions and their derivatives
+   * @param {array} convectionHeatTranfCoeff - Array of convection heat transfer coefficients
+   * @param {array} convectionExtTemp - Array of external temperatures for convection
+   */
   imposeConvectionBoundaryConditions(
     residualVector,
     jacobianMatrix,
@@ -104,25 +129,40 @@ export class ThermalBoundaryConditions {
                   finalNode = 9;
                   nodeIncr = 1;
                 }
-
                 let basisFunctionsAndDerivatives = basisFunctionsData.getBasisFunctions(gp1, gp2);
                 let basisFunction = basisFunctionsAndDerivatives.basisFunction;
                 let basisFunctionDerivKsi = basisFunctionsAndDerivatives.basisFunctionDerivKsi;
+                let basisFunctionDerivEta = basisFunctionsAndDerivatives.basisFunctionDerivEta;
                 let xCoordinates = 0;
                 let ksiDerivX = 0;
+                let etaDerivY = 0;
                 for (let k = 0; k < 9; k++) {
                   xCoordinates += nodesXCoordinates[this.nop[elementIndex][k] - 1] * basisFunction[k];
                   ksiDerivX += nodesXCoordinates[this.nop[elementIndex][k] - 1] * basisFunctionDerivKsi[k];
+                  etaDerivY += nodesYCoordinates[this.nop[elementIndex][k] - 1] * basisFunctionDerivEta[k];
                 }
-
                 for (let m = firstNode; m < finalNode; m += nodeIncr) {
                   let m1 = this.nop[elementIndex][m] - 1;
-                  residualVector[m1] +=
-                    -gaussWeights[l] * ksiDerivX * basisFunction[m] * convectionCoeff * extTemp;
+                  if (side === 0 || side === 2) {
+                    // Horizontal boundaries of the domain (assuming a rectangular domain)
+                    residualVector[m1] +=
+                      -gaussWeights[l] * ksiDerivX * basisFunction[m] * convectionCoeff * extTemp;
+                  } else if (side === 1 || side === 3) {
+                    // Vertical boundaries of the domain (assuming a rectangular domain)
+                    residualVector[m1] +=
+                      -gaussWeights[l] * etaDerivY * basisFunction[m] * convectionCoeff * extTemp;
+                  }
                   for (let n = firstNode; n < finalNode; n += nodeIncr) {
                     let n1 = this.nop[elementIndex][n] - 1;
-                    jacobianMatrix[m1][n1] +=
-                      -gaussWeights[l] * ksiDerivX * basisFunction[m] * basisFunction[n] * convectionCoeff;
+                    if (side === 0 || side === 2) {
+                      // Horizontal boundaries of the domain (assuming a rectangular domain)
+                      jacobianMatrix[m1][n1] +=
+                        -gaussWeights[l] * ksiDerivX * basisFunction[m] * basisFunction[n] * convectionCoeff;
+                    } else if (side === 1 || side === 3) {
+                      // Vertical boundaries of the domain (assuming a rectangular domain)
+                      jacobianMatrix[m1][n1] +=
+                        -gaussWeights[l] * etaDerivY * basisFunction[m] * basisFunction[n] * convectionCoeff;
+                    }
                   }
                 }
               }
