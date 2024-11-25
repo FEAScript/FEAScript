@@ -1,68 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>FEAScript: Heat Conduction in a Two-Dimensional Fin Example</title>
 
     <!-- Math.js and Plotly.js libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.0.0/math.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
 
-    <!-- Style -->
-    <style>
-      html {
-        max-width: 1500px;
-        margin: auto;
-        font-family: "Roboto", sans-serif;
-        font-size: 90%;
-      }
-
-      body {
-        padding: 20px;
-        line-height: 1.6;
-      }
-
-      h1,
-      h2,
-      h3 {
-        background: none;
-        font-weight: normal;
-        margin: 0;
-        padding-top: 0.4em;
-        padding-bottom: 0.2em;
-        width: auto;
-        margin-bottom: 0.5em;
-      }
-
-      h1 {
-        color: #555;
-        font-size: 150%;
-        margin-bottom: 0.4em;
-        line-height: 1.2em;
-      }
-
-      p {
-        margin: 1em 0;
-        max-width: 1000px;
-        margin-bottom: 1em;
-      }
-
-      a {
-        text-decoration: none;
-      }
-    </style>
+    <!-- Link to the CSS file -->
+    <link href="https://feascript.com/FEAScript-website.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   </head>
 
-  <!-- Webpage text -->
   <body>
     <h1>Heat Conduction in a Two-Dimensional Fin Example</h1>
     <div id="solutionPlot"></div>
 
     <p>
       The mesh configuration and boundary conditions can be adjusted by editing the respective JSON files
-      (meshConfig.json and boundaryConditionsConfig.json). The solver configuration is set explicitly to
-      solidHeatTransferScript in this example. Please refresh the page to update the results. Detailed
+      (`meshConfig.json` and `boundaryConditionsConfig.json`). The solver configuration is set explicitly to
+      `solidHeatTransferScript` in this example. Please refresh the page to update the results. Detailed
       instructions for this example can be found in the corresponding
       <a
         href="https://github.com/FEAScript/FEAScript-website/blob/main/tutorialSolidHeatTransfer01/tutorialSolidHeatTransfer01.html"
