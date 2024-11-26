@@ -11,7 +11,7 @@
 import { assembleSolidHeatTransferMat } from "./solvers/solidHeatTransferScript.js";
 
 /**
- * FEAScript: An open-source finite element simulation software developed in JavaScript
+ * FEAScript: An open-source finite element simulation library developed in JavaScript
  * @param {string} solverConfig - Parameter specifying the type of solver
  * @param {object} meshConfig - Object containing computational mesh details
  * @param {object} boundaryConditions - Object containing boundary conditions for the finite element analysis
