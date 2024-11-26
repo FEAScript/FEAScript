@@ -129,7 +129,10 @@ export class ThermalBoundaryConditions {
                   lastNodeIndex = 9;
                   nodeIncrement = 1;
                 }
-                let basisFunctionsAndDerivatives = basisFunctionsData.getBasisFunctions(gaussPoint1, gaussPoint2);
+                let basisFunctionsAndDerivatives = basisFunctionsData.getBasisFunctions(
+                  gaussPoint1,
+                  gaussPoint2
+                );
                 let basisFunction = basisFunctionsAndDerivatives.basisFunction;
                 let basisFunctionDerivKsi = basisFunctionsAndDerivatives.basisFunctionDerivKsi;
                 let basisFunctionDerivEta = basisFunctionsAndDerivatives.basisFunctionDerivEta;
@@ -137,29 +140,62 @@ export class ThermalBoundaryConditions {
                 let ksiDerivX = 0;
                 let etaDerivY = 0;
                 for (let nodeIndex = 0; nodeIndex < 9; nodeIndex++) {
-                  xCoordinates += nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunction[nodeIndex];
-                  ksiDerivX += nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunctionDerivKsi[nodeIndex];
-                  etaDerivY += nodesYCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunctionDerivEta[nodeIndex];
+                  xCoordinates +=
+                    nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunction[nodeIndex];
+                  ksiDerivX +=
+                    nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] *
+                    basisFunctionDerivKsi[nodeIndex];
+                  etaDerivY +=
+                    nodesYCoordinates[this.nop[elementIndex][nodeIndex] - 1] *
+                    basisFunctionDerivEta[nodeIndex];
                 }
-                for (let localNodeIndex = firstNodeIndex; localNodeIndex < lastNodeIndex; localNodeIndex += nodeIncrement) {
+                for (
+                  let localNodeIndex = firstNodeIndex;
+                  localNodeIndex < lastNodeIndex;
+                  localNodeIndex += nodeIncrement
+                ) {
                   let globalNodeIndex = this.nop[elementIndex][localNodeIndex] - 1;
                   if (side === 0 || side === 2) {
                     // Horizontal boundaries of the domain (assuming a rectangular domain)
                     residualVector[globalNodeIndex] +=
-                      -gaussWeights[gaussPointIndex] * ksiDerivX * basisFunction[localNodeIndex] * convectionCoeff * extTemp;
-                    for (let localNodeIndex2 = firstNodeIndex; localNodeIndex2 < lastNodeIndex; localNodeIndex2 += nodeIncrement) {
+                      -gaussWeights[gaussPointIndex] *
+                      ksiDerivX *
+                      basisFunction[localNodeIndex] *
+                      convectionCoeff *
+                      extTemp;
+                    for (
+                      let localNodeIndex2 = firstNodeIndex;
+                      localNodeIndex2 < lastNodeIndex;
+                      localNodeIndex2 += nodeIncrement
+                    ) {
                       let globalNodeIndex2 = this.nop[elementIndex][localNodeIndex2] - 1;
                       jacobianMatrix[globalNodeIndex][globalNodeIndex2] +=
-                        -gaussWeights[gaussPointIndex] * ksiDerivX * basisFunction[localNodeIndex] * basisFunction[localNodeIndex2] * convectionCoeff;
+                        -gaussWeights[gaussPointIndex] *
+                        ksiDerivX *
+                        basisFunction[localNodeIndex] *
+                        basisFunction[localNodeIndex2] *
+                        convectionCoeff;
                     }
                   } else if (side === 1 || side === 3) {
                     // Vertical boundaries of the domain (assuming a rectangular domain)
                     residualVector[globalNodeIndex] +=
-                      -gaussWeights[gaussPointIndex] * etaDerivY * basisFunction[localNodeIndex] * convectionCoeff * extTemp;
-                    for (let localNodeIndex2 = firstNodeIndex; localNodeIndex2 < lastNodeIndex; localNodeIndex2 += nodeIncrement) {
+                      -gaussWeights[gaussPointIndex] *
+                      etaDerivY *
+                      basisFunction[localNodeIndex] *
+                      convectionCoeff *
+                      extTemp;
+                    for (
+                      let localNodeIndex2 = firstNodeIndex;
+                      localNodeIndex2 < lastNodeIndex;
+                      localNodeIndex2 += nodeIncrement
+                    ) {
                       let globalNodeIndex2 = this.nop[elementIndex][localNodeIndex2] - 1;
                       jacobianMatrix[globalNodeIndex][globalNodeIndex2] +=
-                        -gaussWeights[gaussPointIndex] * etaDerivY * basisFunction[localNodeIndex] * basisFunction[localNodeIndex2] * convectionCoeff;
+                        -gaussWeights[gaussPointIndex] *
+                        etaDerivY *
+                        basisFunction[localNodeIndex] *
+                        basisFunction[localNodeIndex2] *
+                        convectionCoeff;
                     }
                   }
                 }

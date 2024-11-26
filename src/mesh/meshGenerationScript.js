@@ -97,17 +97,25 @@ export class meshGeneration {
     let totalNodesX, totalNodesY, deltaX, deltaY;
 
     if (this.meshDimension === "1D") {
-      totalNodesX = 2 * this.numElementsX + 1;
-      deltaX = (this.maxX - xStart) / this.numElementsX;
+      if (this.elementOrder === "linear") {
+        totalNodesX = this.numElementsX + 1;
+        deltaX = (this.maxX - xStart) / this.numElementsX;
 
-      nodesXCoordinates[0] = xStart;
-      for (let nodeIndex = 1; nodeIndex < totalNodesX; nodeIndex++) {
-        nodesXCoordinates[nodeIndex] = nodesXCoordinates[nodeIndex - 1] + deltaX;
+        nodesXCoordinates[0] = xStart;
+        for (let nodeIndex = 1; nodeIndex < totalNodesX; nodeIndex++) {
+          nodesXCoordinates[nodeIndex] = nodesXCoordinates[nodeIndex - 1] + deltaX;
+        }
+      } else if (this.elementOrder === "quadratic") {
+        totalNodesX = 2 * this.numElementsX + 1;
+        deltaX = (this.maxX - xStart) / this.numElementsX;
+
+        nodesXCoordinates[0] = xStart;
+        for (let nodeIndex = 1; nodeIndex < totalNodesX; nodeIndex++) {
+          nodesXCoordinates[nodeIndex] = nodesXCoordinates[nodeIndex - 1] + deltaX / 2;
+        }
       }
-
       // Generate nodal numbering (NOP) array
       const nodalNumbering = this.generateNodalNumbering(this.numElementsX, totalNodesX, this.elementOrder);
-
       // Find boundary elements
       const boundaryElements = this.findBoundaryElements();
 
@@ -118,28 +126,31 @@ export class meshGeneration {
         nodalNumbering,
         boundaryElements,
       };
-    } else {
-      totalNodesX = 2 * this.numElementsX + 1;
-      totalNodesY = 2 * this.numElementsY + 1;
-      deltaX = (this.maxX - xStart) / this.numElementsX;
-      deltaY = (this.maxY - yStart) / this.numElementsY;
+    } else if (this.meshDimension === "2D") {
+      if (this.elementOrder === "linear") {
+        console.log("Unsupported dimension or element order");
+      } else if (this.elementOrder === "quadratic") {
+        totalNodesX = 2 * this.numElementsX + 1;
+        totalNodesY = 2 * this.numElementsY + 1;
+        deltaX = (this.maxX - xStart) / this.numElementsX;
+        deltaY = (this.maxY - yStart) / this.numElementsY;
 
-      nodesXCoordinates[0] = xStart;
-      nodesYCoordinates[0] = yStart;
-      for (let nodeIndexY = 1; nodeIndexY < totalNodesY; nodeIndexY++) {
-        nodesXCoordinates[nodeIndexY] = nodesXCoordinates[0];
-        nodesYCoordinates[nodeIndexY] = nodesYCoordinates[0] + (nodeIndexY * deltaY) / 2;
-      }
-      for (let nodeIndexX = 1; nodeIndexX < totalNodesX; nodeIndexX++) {
-        const nnode = nodeIndexX * totalNodesY;
-        nodesXCoordinates[nnode] = nodesXCoordinates[0] + (nodeIndexX * deltaX) / 2;
-        nodesYCoordinates[nnode] = nodesYCoordinates[0];
+        nodesXCoordinates[0] = xStart;
+        nodesYCoordinates[0] = yStart;
         for (let nodeIndexY = 1; nodeIndexY < totalNodesY; nodeIndexY++) {
-          nodesXCoordinates[nnode + nodeIndexY] = nodesXCoordinates[nnode];
-          nodesYCoordinates[nnode + nodeIndexY] = nodesYCoordinates[nnode] + (nodeIndexY * deltaY) / 2;
+          nodesXCoordinates[nodeIndexY] = nodesXCoordinates[0];
+          nodesYCoordinates[nodeIndexY] = nodesYCoordinates[0] + (nodeIndexY * deltaY) / 2;
+        }
+        for (let nodeIndexX = 1; nodeIndexX < totalNodesX; nodeIndexX++) {
+          const nnode = nodeIndexX * totalNodesY;
+          nodesXCoordinates[nnode] = nodesXCoordinates[0] + (nodeIndexX * deltaX) / 2;
+          nodesYCoordinates[nnode] = nodesYCoordinates[0];
+          for (let nodeIndexY = 1; nodeIndexY < totalNodesY; nodeIndexY++) {
+            nodesXCoordinates[nnode + nodeIndexY] = nodesXCoordinates[nnode];
+            nodesYCoordinates[nnode + nodeIndexY] = nodesYCoordinates[nnode] + (nodeIndexY * deltaY) / 2;
+          }
         }
       }
-
       // Generate nodal numbering (NOP) array
       const nodalNumbering = this.generateNodalNumbering(
         this.numElementsX,
@@ -148,7 +159,6 @@ export class meshGeneration {
         totalNodesY,
         this.elementOrder
       );
-
       // Find boundary elements
       const boundaryElements = this.findBoundaryElements();
 
@@ -203,14 +213,14 @@ export class meshGeneration {
               boundaryElements[0].push([elementIndex, 0]);
             }
 
-            // Top boundary
-            if (elementIndexY === this.numElementsY - 1) {
-              boundaryElements[2].push([elementIndex, 2]);
-            }
-
             // Left boundary
             if (elementIndexX === 0) {
               boundaryElements[1].push([elementIndex, 1]);
+            }
+
+            // Top boundary
+            if (elementIndexY === this.numElementsY - 1) {
+              boundaryElements[2].push([elementIndex, 2]);
             }
 
             // Right boundary
@@ -241,13 +251,24 @@ export class meshGeneration {
 
     if (this.meshDimension === "1D") {
       if (elementOrder === "linear") {
-        console.log("Unsupported dimension or element order");
+        /**
+         * Linear 1D elements with the following nodes representation:
+         *
+         *   1__ __2
+         *
+         */
+        for (let elementIndex = 1; elementIndex <= numElementsX; i++) {
+          nop[elementIndex] = [];
+          for (let nodeIndex = 1; nodeIndex <= 2; nodeIndex++) {
+            nop[elementIndex][nodeIndex - 1] = i + (nodeIndex - 1);
+          }
+          elementIndex += 1;
+        }
       } else if (elementOrder === "quadratic") {
         console.log("Unsupported dimension or element order");
       }
     } else if (this.meshDimension === "2D") {
       if (elementOrder === "linear") {
-        console.log("Unsupported dimension or element order");
         /**
          * Linear rectangular elements with the following nodes representation:
          *
@@ -257,6 +278,21 @@ export class meshGeneration {
          *   0     2
          *
          */
+        let rowCounter = 0;
+        let columnCounter = 1;
+        for (let elementIndex = 1; elementIndex <= numElementsX * numElementsY; i++) {
+          rowCounter += 1;
+          nop[elementIndex] = [];
+          nop[elementIndex][0] = i + columnCounter - 1;
+          nop[elementIndex][1] = i + columnCounter;
+          nop[elementIndex][2] = i + columnCounter + numElementsY;
+          nop[elementIndex][3] = i + columnCounter + numElementsY + 1;
+          if (rowCounter === numElementsY) {
+            columnCounter += 1;
+            rowCounter = 0;
+          }
+          elementIndex += 1;
+        }
       } else if (elementOrder === "quadratic") {
         /**
          * Quadratic rectangular elements with the following nodes representation:
@@ -268,7 +304,6 @@ export class meshGeneration {
          *   0  3  6
          *
          */
-
         for (let elementIndex = 0; elementIndex < numElementsX * numElementsY; elementIndex++) {
           nop.push([]);
           for (let nodeIndex = 0; nodeIndex < 9; nodeIndex++) {

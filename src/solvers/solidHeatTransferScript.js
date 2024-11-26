@@ -118,6 +118,7 @@ export function assembleSolidHeatTransferMat(meshConfig, boundaryConditions) {
   // Matrix assembly
   for (let elementIndex = 0; elementIndex < totalElements; elementIndex++) {
     for (let localNodeIndex = 0; localNodeIndex < numNodes; localNodeIndex++) {
+      // Sutract 1 from nop in order to start numbering from 0
       localNodalNumbers[localNodeIndex] = nop[elementIndex][localNodeIndex] - 1;
     }
 
