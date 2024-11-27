@@ -257,15 +257,27 @@ export class meshGeneration {
          *   1__ __2
          *
          */
-        for (let elementIndex = 1; elementIndex <= numElementsX; i++) {
+        for (let elementIndex = 1; elementIndex <= numElementsX; elementIndex++) {
           nop[elementIndex] = [];
           for (let nodeIndex = 1; nodeIndex <= 2; nodeIndex++) {
             nop[elementIndex][nodeIndex - 1] = i + (nodeIndex - 1);
           }
-          elementIndex += 1;
         }
       } else if (elementOrder === "quadratic") {
-        console.log("Unsupported dimension or element order");
+        /**
+         * Quadratic 1D elements with the following nodes representation:
+         *
+         *   1__2__3
+         *
+         */
+        let columnCounter = 1;
+        for (let elementIndex = 1; elementIndex <= numElementsX; elementIndex++) {
+          nop[elementIndex] = [];
+          for (let nodeIndex = 1; nodeIndex <= 3; nodeIndex++) {
+            nop[elementIndex][nodeIndex - 1] = elementIndex + (nodeIndex - 1) + columnCounter;
+          }
+          columnCounter += 1;
+        }
       }
     } else if (this.meshDimension === "2D") {
       if (elementOrder === "linear") {
@@ -280,18 +292,17 @@ export class meshGeneration {
          */
         let rowCounter = 0;
         let columnCounter = 1;
-        for (let elementIndex = 1; elementIndex <= numElementsX * numElementsY; i++) {
+        for (let elementIndex = 1; elementIndex <= numElementsX * numElementsY; elementIndex++) {
           rowCounter += 1;
           nop[elementIndex] = [];
-          nop[elementIndex][0] = i + columnCounter - 1;
-          nop[elementIndex][1] = i + columnCounter;
-          nop[elementIndex][2] = i + columnCounter + numElementsY;
-          nop[elementIndex][3] = i + columnCounter + numElementsY + 1;
+          nop[elementIndex][0] = elementIndex + columnCounter - 1;
+          nop[elementIndex][1] = elementIndex + columnCounter;
+          nop[elementIndex][2] = elementIndex + columnCounter + numElementsY;
+          nop[elementIndex][3] = elementIndex + columnCounter + numElementsY + 1;
           if (rowCounter === numElementsY) {
             columnCounter += 1;
             rowCounter = 0;
           }
-          elementIndex += 1;
         }
       } else if (elementOrder === "quadratic") {
         /**
@@ -304,21 +315,15 @@ export class meshGeneration {
          *   0  3  6
          *
          */
-        for (let elementIndex = 0; elementIndex < numElementsX * numElementsY; elementIndex++) {
-          nop.push([]);
-          for (let nodeIndex = 0; nodeIndex < 9; nodeIndex++) {
-            nop[elementIndex][nodeIndex] = 0;
-          }
-        }
-
         for (let elementIndexX = 1; elementIndexX <= numElementsX; elementIndexX++) {
           for (let elementIndexY = 1; elementIndexY <= numElementsY; elementIndexY++) {
-            for (let nodeIndex = 1; nodeIndex <= 3; nodeIndex++) {
-              let l = 3 * nodeIndex - 2;
-              nop[elementIndex][l - 1] =
-                totalNodesY * (2 * elementIndexX + nodeIndex - 3) + 2 * elementIndexY - 1;
-              nop[elementIndex][l] = nop[elementIndex][l - 1] + 1;
-              nop[elementIndex][l + 1] = nop[elementIndex][l - 1] + 2;
+            nop[elementIndex] = [];
+            for (let nodeIndex1 = 1; nodeIndex1 <= 3; nodeIndex1++) {
+              let nodeIndex2 = 3 * nodeIndex1 - 2;
+              nop[elementIndex][nodeIndex2 - 1] =
+                totalNodesY * (2 * elementIndexX + nodeIndex1 - 3) + 2 * elementIndexY - 1;
+              nop[elementIndex][nodeIndex2] = nop[elementIndex][nodeIndex2 - 1] + 1;
+              nop[elementIndex][nodeIndex2 + 1] = nop[elementIndex][nodeIndex2 - 1] + 2;
             }
             elementIndex = elementIndex + 1;
           }
