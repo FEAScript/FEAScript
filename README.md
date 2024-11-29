@@ -22,7 +22,7 @@ const model = new FEAScriptModel();
 // Configure the solver
 model.setSolverConfig("solverType"); // e.g., "solidHeatTransfer"
 
-// Define mesh configuration (assuming a rectangular domain)
+// Define mesh configuration (assuming a rectangular domain for 2D)
 model.setMeshConfig({
   meshDimension: "1D" | "2D", // Mesh dimension
   elementOrder: "linear" | "quadratic", // Element order
