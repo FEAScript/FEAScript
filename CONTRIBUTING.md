@@ -1,22 +1,29 @@
 ## Contributing to FEAScript
 
-Thank you for your interest in contributing! FEAScript is in early development with continuous addition of new features and improvements. To ensure a smooth and collaborative development process, please review and follow the guidelines.
+Thank you for your interest in contributing! FEAScript is in early development, with continuous additions of new features and improvements. To ensure a smooth and collaborative development process, please review and follow the guidelines below.
 
 ## Contribution Guidelines
 
-<!--1. Search the <a href="https://github.com/FEAScript/FEAScript/wiki/Roadmap" target="_blank">project roadmap</a> to see areas where help is needed.-->
+1. **Respect the existing coding style:** Observe the code near your intended changes and aim to preserve that style in your modifications.
 
-1. Respect the existing FEAScript coding style. Observe the code near your intended change and attempt to preserve that style with your modifications.
+2. **Recommended tools:**  
+   We recommend using [Visual Studio Code](https://code.visualstudio.com/) with the [Prettier plugin](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for automatic code formatting. Additionally, use a **110-character line width** to maintain consistent formatting.
 
-2. We recommend using <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a> with the <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode" target="_blank">Prettier</a> plugin for automatic code formatting. Additionally, we use a 110-character line width to maintain consistent formatting.
+3. **Naming conventions:**  
+   Use [camelCase](https://en.wikipedia.org/wiki/Camel_case) formatting for variable names throughout the code.
 
-3. Ensure that you use <a href="https://en.wikipedia.org/wiki/Camel_case" target="_blank">camelCase</a> formatting for variable names throughout the code.
+4. **Testing changes locally:**  
+   Before submitting a pull request, test your modifications by running the FEAScript library from a local directory. For example, you can load the library in your HTML file as follows:
 
-4. Before applying for a pull request, you can test your modifications by running the FEAScript library from a local server. For security reasons, it is recommended to use a <a href="https://docs.python.org/3/library/http.server.html" target="_blank">Python HTTP Server</a> by executing the following <a href="https://github.com/FEAScript/FEAScript-website/blob/main/corsHttpServer.py" target="_blank">script</a>. Start the Python server by running `python3 corsHttpServer.py` in your local repository folder. The server address will be http://127.0.0.1:8000/.
+   ```javascript
+   import { FEAScriptModel, plotSolution, printVersion } from "../../FEAScript/src/index.js";
+   ```
 
-   Alternatively, you can disable CORS in your browser for local testing. To disable CORS in Firefox:
+   For security reasons, it is still recommended to use a local server to handle CORS policies correctly. You can use a <a href="https://docs.python.org/3/library/http.server.html" target="_blank">Python HTTP Server</a> by executing the following <a href="https://github.com/FEAScript/FEAScript-website/blob/main/corsHttpServer.py" target="_blank">script</a> to start a local server:
 
-   1. Open Firefox and type `about:config` in the address bar, then press Enter.
-   2. Accept the risk and continue to the advanced settings.
-   3. In the search bar, type `security.fileuri.strict_origin_policy`.
-   4. Double-click on the `security.fileuri.strict_origin_policy` preference to set it to `false`.
+   ```bash
+   python3 corsHttpServer.py
+   ```
+
+   The server will be available at:  
+   `http://127.0.0.1:8000/`

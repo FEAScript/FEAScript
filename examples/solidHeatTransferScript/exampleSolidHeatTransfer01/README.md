@@ -1,34 +1,9 @@
-<img src="https://feascript.github.io/FEAScript-website/images/FEAScriptLogo.png" width="80">
+<img src="https://feascript.github.io/FEAScript-website/images/FEAScriptLogo.png" width="80" alt="FEAScript Logo">
 
 ## Heat Conduction in a Two-Dimensional Fin
 
-This example demonstrates how to solve a stationary heat transfer problem within a 2D rectangular domain using the FEAScript library. The problem is a typical cooling fin scenario.
+This example demonstrates solving a steady-state heat transfer problem in a 2D rectangular domain using the **FEAScript** library. The problem represents a typical cooling fin scenario, where the objective is to model heat conduction and understand temperature distribution under specific boundary conditions.
 
-### Files
+### Instructions
 
-- `meshConfig.json`: Defines the computational mesh parameters.
-- `boundaryConditionsConfig.json`: Specifies the boundary conditions for the problem.
-- `FEAScriptExampleSolidHeatTransfer01.html`: The main HTML file that sets up and runs the example.
-
-### CORS Configuration
-
-<p>
-  This example requires Cross-Origin Resource Sharing (CORS) to run if the JSON files are stored locally. To
-  enable CORS on Firefox, you can follow these steps:
-</p>
-<ol>
-  <li>
-    Open Firefox and type <code>about:config</code> in the address bar, then
-    press Enter.
-  </li>
-  <li>Accept the risk and continue to the advanced settings.</li>
-  <li>
-    In the search bar, type
-    <code>security.fileuri.strict_origin_policy</code>.
-  </li>
-  <li>
-    Double-click on the
-    <code>security.fileuri.strict_origin_policy</code> preference to set it
-    to <code>false</code>.
-  </li>
-</ol>
+The **mesh configuration** and **boundary conditions** are defined directly in the JavaScript section of the HTML file. For a step-by-step guide and additional details, refer to the corresponding [tutorial](https://github.com/FEAScript/FEAScript-website/blob/main/tutorialSolidHeatTransfer01/tutorialSolidHeatTransfer01.html).

@@ -8,6 +8,6 @@
 //                                            |_|   | |_   //
 //       Website: https://feascript.com/             \__|  //
 
-export { FEAScript } from "./FEAScript.js";
+export { FEAScriptModel } from "./FEAScript.js";
 export { plotSolution } from "./visualization/plotSolutionScript.js";
 export { printVersion } from "./utilities/helperFunctionsScript.js";

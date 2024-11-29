@@ -9,7 +9,7 @@
 
 ## How to Use
 
-FEAScript is built entirely in pure JavaScript, requiring only an HTML page to run. Simulation inputs are provided as <a href="https://www.w3schools.com/js/js_json_intro.asp" target="_blank">JSON</a> files, which can be stored locally or hosted online using platforms like <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> or <a href="https://www.jsonkeeper.com/" target="_blank">JSON Keeper</a>. FEAScript operates entirely within your browser, with no reliance on cloud services. You can explore various examples demonstrating how to use FEAScript to solve a range of problems <a href="https://github.com/FEAScript/FEAScript/tree/main/examples" target="_blank">here</a>.
+FEAScript is built entirely in pure JavaScript, requiring only an HTML page to run. Simulation inputs are provided directly through JavaScript objects. FEAScript operates entirely within your browser, with no reliance on cloud services. You can explore various examples demonstrating how to use FEAScript to solve a range of problems <a href="https://github.com/FEAScript/FEAScript/tree/main/examples" target="_blank">here</a>.
 
 ## Contribute
 
