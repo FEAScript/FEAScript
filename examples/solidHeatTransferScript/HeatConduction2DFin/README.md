@@ -6,4 +6,4 @@ This example demonstrates solving a steady-state heat transfer problem in a 2D r
 
 ### Instructions
 
-The **mesh configuration** and **boundary conditions** are defined directly in the JavaScript section of the HTML file. For a step-by-step guide and additional details, refer to the corresponding [tutorial](https://github.com/FEAScript/FEAScript-website/blob/main/tutorialSolidHeatTransfer01/tutorialSolidHeatTransfer01.html).
+The **mesh configuration** and **boundary conditions** are defined directly in the JavaScript section of the HTML file. For a step-by-step guide and additional details, refer to the corresponding [tutorial](https://feascript.com/tutorials/HeatConduction2DFin.html).
