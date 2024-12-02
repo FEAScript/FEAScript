@@ -128,7 +128,26 @@ export class meshGeneration {
       };
     } else if (this.meshDimension === "2D") {
       if (this.elementOrder === "linear") {
-        console.log("Unsupported dimension or element order");
+        totalNodesX = this.numElementsX + 1;
+        totalNodesY = this.numElementsY + 1;
+        deltaX = (this.maxX - xStart) / this.numElementsX;
+        deltaY = (this.maxY - yStart) / this.numElementsY;
+
+        nodesXCoordinates[0] = xStart;
+        nodesYCoordinates[0] = yStart;
+        for (let nodeIndexY = 1; nodeIndexY < totalNodesY; nodeIndexY++) {
+          nodesXCoordinates[nodeIndexY] = nodesXCoordinates[0];
+          nodesYCoordinates[nodeIndexY] = nodesYCoordinates[0] + (nodeIndexY * deltaY);
+        }
+        for (let nodeIndexX = 1; nodeIndexX < totalNodesX; nodeIndexX++) {
+          const nnode = nodeIndexX * totalNodesY;
+          nodesXCoordinates[nnode] = nodesXCoordinates[0] + (nodeIndexX * deltaX);
+          nodesYCoordinates[nnode] = nodesYCoordinates[0];
+          for (let nodeIndexY = 1; nodeIndexY < totalNodesY; nodeIndexY++) {
+            nodesXCoordinates[nnode + nodeIndexY] = nodesXCoordinates[nnode];
+            nodesYCoordinates[nnode + nodeIndexY] = nodesYCoordinates[nnode] + (nodeIndexY * deltaY);
+          }
+        }
       } else if (this.elementOrder === "quadratic") {
         totalNodesX = 2 * this.numElementsX + 1;
         totalNodesY = 2 * this.numElementsY + 1;
@@ -205,28 +224,24 @@ export class meshGeneration {
         for (let elementIndexY = 0; elementIndexY < this.numElementsY; elementIndexY++) {
           const elementIndex = elementIndexX * this.numElementsY + elementIndexY;
 
-          if (this.elementOrder === "linear") {
-            console.log("Unsupported dimension or element order");
-          } else if (this.elementOrder === "quadratic") {
-            // Bottom boundary
-            if (elementIndexY === 0) {
-              boundaryElements[0].push([elementIndex, 0]);
-            }
+          // Bottom boundary
+          if (elementIndexY === 0) {
+            boundaryElements[0].push([elementIndex, 0]);
+          }
 
-            // Left boundary
-            if (elementIndexX === 0) {
-              boundaryElements[1].push([elementIndex, 1]);
-            }
+          // Left boundary
+          if (elementIndexX === 0) {
+            boundaryElements[1].push([elementIndex, 1]);
+          }
 
-            // Top boundary
-            if (elementIndexY === this.numElementsY - 1) {
-              boundaryElements[2].push([elementIndex, 2]);
-            }
+          // Top boundary
+          if (elementIndexY === this.numElementsY - 1) {
+            boundaryElements[2].push([elementIndex, 2]);
+          }
 
-            // Right boundary
-            if (elementIndexX === this.numElementsX - 1) {
-              boundaryElements[3].push([elementIndex, 3]);
-            }
+          // Right boundary
+          if (elementIndexX === this.numElementsX - 1) {
+            boundaryElements[3].push([elementIndex, 3]);
           }
         }
       }
@@ -257,7 +272,7 @@ export class meshGeneration {
          *   1__ __2
          *
          */
-        for (let elementIndex = 1; elementIndex <= numElementsX; elementIndex++) {
+        for (let elementIndex = 0; elementIndex < numElementsX; elementIndex++) {
           nop[elementIndex] = [];
           for (let nodeIndex = 1; nodeIndex <= 2; nodeIndex++) {
             nop[elementIndex][nodeIndex - 1] = i + (nodeIndex - 1);
@@ -270,8 +285,8 @@ export class meshGeneration {
          *   1__2__3
          *
          */
-        let columnCounter = 1;
-        for (let elementIndex = 1; elementIndex <= numElementsX; elementIndex++) {
+        let columnCounter = 2;
+        for (let elementIndex = 0; elementIndex < numElementsX; elementIndex++) {
           nop[elementIndex] = [];
           for (let nodeIndex = 1; nodeIndex <= 3; nodeIndex++) {
             nop[elementIndex][nodeIndex - 1] = elementIndex + (nodeIndex - 1) + columnCounter;
@@ -291,8 +306,8 @@ export class meshGeneration {
          *
          */
         let rowCounter = 0;
-        let columnCounter = 1;
-        for (let elementIndex = 1; elementIndex <= numElementsX * numElementsY; elementIndex++) {
+        let columnCounter = 2;
+        for (let elementIndex = 0; elementIndex < numElementsX * numElementsY; elementIndex++) {
           rowCounter += 1;
           nop[elementIndex] = [];
           nop[elementIndex][0] = elementIndex + columnCounter - 1;

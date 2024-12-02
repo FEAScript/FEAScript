@@ -1,4 +1,4 @@
-<img src="https://feascript.github.io/FEAScript-website/assets/FEAScriptLogo.png" width="80" alt="FEAScript Logo">
+<img src="https://feascript.github.io/FEAScript-website/assets/FEAScriptHeatTransfer.png" width="80" alt="FEAScript Logo">
 
 ## Heat Conduction in a Two-Dimensional Fin
 

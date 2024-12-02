@@ -40,7 +40,23 @@ export class ThermalBoundaryConditions {
           const tempValue = this.boundaryConditions[boundaryKey][1];
           this.boundaryElements[boundaryKey].forEach(([elementIndex, side]) => {
             if (this.elementOrder === "linear") {
-              console.log("Unsupported dimension or element order");
+              const boundarySides = {
+                0: [0, 2], // Nodes at the bottom side of the reference element
+                1: [0, 1], // Nodes at the left side of the reference element
+                2: [1, 3], // Nodes at the top side of the reference element
+                3: [2, 3], // Nodes at the right side of the reference element
+              };
+              boundarySides[boundaryKey].forEach((nodeIndex) => {
+                const globalNodeIndex = this.nop[elementIndex][nodeIndex] - 1;
+                // Set the residual vector to the ConstantTemp value
+                residualVector[globalNodeIndex] = tempValue;
+                // Set the Jacobian matrix row to zero
+                for (let colIndex = 0; colIndex < residualVector.length; colIndex++) {
+                  jacobianMatrix[globalNodeIndex][colIndex] = 0;
+                }
+                // Set the diagonal entry of the Jacobian matrix to one
+                jacobianMatrix[globalNodeIndex][globalNodeIndex] = 1;
+              });
             } else if (this.elementOrder === "quadratic") {
               const boundarySides = {
                 0: [0, 3, 6], // Nodes at the bottom side of the reference element
@@ -96,7 +112,107 @@ export class ThermalBoundaryConditions {
           const extTemp = convectionExtTemp[boundaryKey];
           this.boundaryElements[boundaryKey].forEach(([elementIndex, side]) => {
             if (this.elementOrder === "linear") {
-              console.log("Unsupported dimension or element order");
+              let gaussPoint1, gaussPoint2, firstNodeIndex, lastNodeIndex, nodeIncrement;
+              if (side === 0) {
+                // Nodes at the bottom side of the reference element
+                gaussPoint1 = gaussPoints[0];
+                gaussPoint2 = 0;
+                firstNodeIndex = 0;
+                lastNodeIndex = 2;
+                nodeIncrement = 2;
+              } else if (side === 1) {
+                // Nodes at the left side of the reference element
+                gaussPoint1 = 0;
+                gaussPoint2 = gaussPoints[0];
+                firstNodeIndex = 0;
+                lastNodeIndex = 1;
+                nodeIncrement = 1;
+              } else if (side === 2) {
+                // Nodes at the top side of the reference element
+                gaussPoint1 = gaussPoints[0];
+                gaussPoint2 = 1;
+                firstNodeIndex = 1;
+                lastNodeIndex = 3;
+                nodeIncrement = 2;
+              } else if (side === 3) {
+                // Nodes at the right side of the reference element
+                gaussPoint1 = 1;
+                gaussPoint2 = gaussPoints[0];
+                firstNodeIndex = 2;
+                lastNodeIndex = 3;
+                nodeIncrement = 1;
+              }
+              let basisFunctionsAndDerivatives = basisFunctionsData.getBasisFunctions(
+                gaussPoint1,
+                gaussPoint2
+              );
+              let basisFunction = basisFunctionsAndDerivatives.basisFunction;
+              let basisFunctionDerivKsi = basisFunctionsAndDerivatives.basisFunctionDerivKsi;
+              let basisFunctionDerivEta = basisFunctionsAndDerivatives.basisFunctionDerivEta;
+              let xCoordinates = 0;
+              let ksiDerivX = 0;
+              let etaDerivY = 0;
+              const numNodes = this.nop[elementIndex].length;
+              for (let nodeIndex = 0; nodeIndex < numNodes; nodeIndex++) {
+                xCoordinates +=
+                  nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunction[nodeIndex];
+                ksiDerivX +=
+                  nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] *
+                  basisFunctionDerivKsi[nodeIndex];
+                etaDerivY +=
+                  nodesYCoordinates[this.nop[elementIndex][nodeIndex] - 1] *
+                  basisFunctionDerivEta[nodeIndex];
+              }
+              for (
+                let localNodeIndex = firstNodeIndex;
+                localNodeIndex < lastNodeIndex;
+                localNodeIndex += nodeIncrement
+              ) {
+                let globalNodeIndex = this.nop[elementIndex][localNodeIndex] - 1;
+                if (side === 0 || side === 2) {
+                  // Horizontal boundaries of the domain (assuming a rectangular domain)
+                  residualVector[globalNodeIndex] +=
+                    -gaussWeights[0] *
+                    ksiDerivX *
+                    basisFunction[localNodeIndex] *
+                    convectionCoeff *
+                    extTemp;
+                  for (
+                    let localNodeIndex2 = firstNodeIndex;
+                    localNodeIndex2 < lastNodeIndex;
+                    localNodeIndex2 += nodeIncrement
+                  ) {
+                    let globalNodeIndex2 = this.nop[elementIndex][localNodeIndex2] - 1;
+                    jacobianMatrix[globalNodeIndex][globalNodeIndex2] +=
+                      -gaussWeights[0] *
+                      ksiDerivX *
+                      basisFunction[localNodeIndex] *
+                      basisFunction[localNodeIndex2] *
+                      convectionCoeff;
+                  }
+                } else if (side === 1 || side === 3) {
+                  // Vertical boundaries of the domain (assuming a rectangular domain)
+                  residualVector[globalNodeIndex] +=
+                    -gaussWeights[0] *
+                    etaDerivY *
+                    basisFunction[localNodeIndex] *
+                    convectionCoeff *
+                    extTemp;
+                  for (
+                    let localNodeIndex2 = firstNodeIndex;
+                    localNodeIndex2 < lastNodeIndex;
+                    localNodeIndex2 += nodeIncrement
+                  ) {
+                    let globalNodeIndex2 = this.nop[elementIndex][localNodeIndex2] - 1;
+                    jacobianMatrix[globalNodeIndex][globalNodeIndex2] +=
+                      -gaussWeights[0] *
+                      etaDerivY *
+                      basisFunction[localNodeIndex] *
+                      basisFunction[localNodeIndex2] *
+                      convectionCoeff;
+                  }
+                }
+              }
             } else if (this.elementOrder === "quadratic") {
               for (let gaussPointIndex = 0; gaussPointIndex < 3; gaussPointIndex++) {
                 let gaussPoint1, gaussPoint2, firstNodeIndex, lastNodeIndex, nodeIncrement;
@@ -139,7 +255,8 @@ export class ThermalBoundaryConditions {
                 let xCoordinates = 0;
                 let ksiDerivX = 0;
                 let etaDerivY = 0;
-                for (let nodeIndex = 0; nodeIndex < 9; nodeIndex++) {
+                const numNodes = this.nop[elementIndex].length;
+                for (let nodeIndex = 0; nodeIndex < numNodes; nodeIndex++) {
                   xCoordinates +=
                     nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunction[nodeIndex];
                   ksiDerivX +=
