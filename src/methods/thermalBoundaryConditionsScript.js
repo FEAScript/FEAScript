@@ -118,28 +118,28 @@ export class ThermalBoundaryConditions {
                 gaussPoint1 = gaussPoints[0];
                 gaussPoint2 = 0;
                 firstNodeIndex = 0;
-                lastNodeIndex = 2;
+                lastNodeIndex = 3;
                 nodeIncrement = 2;
               } else if (side === 1) {
                 // Nodes at the left side of the reference element
                 gaussPoint1 = 0;
                 gaussPoint2 = gaussPoints[0];
                 firstNodeIndex = 0;
-                lastNodeIndex = 1;
+                lastNodeIndex = 2;
                 nodeIncrement = 1;
               } else if (side === 2) {
                 // Nodes at the top side of the reference element
                 gaussPoint1 = gaussPoints[0];
                 gaussPoint2 = 1;
                 firstNodeIndex = 1;
-                lastNodeIndex = 3;
+                lastNodeIndex = 4;
                 nodeIncrement = 2;
               } else if (side === 3) {
                 // Nodes at the right side of the reference element
                 gaussPoint1 = 1;
                 gaussPoint2 = gaussPoints[0];
                 firstNodeIndex = 2;
-                lastNodeIndex = 3;
+                lastNodeIndex = 4;
                 nodeIncrement = 1;
               }
               let basisFunctionsAndDerivatives = basisFunctionsData.getBasisFunctions(
