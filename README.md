@@ -14,7 +14,7 @@ FEAScript is entirely implemented in pure JavaScript and requires only a simple 
 
 ```javascript
 // Import required modules
-import { FEAScriptModel, plotSolution } from "https://feascript.github.io/FEAScript/src/index.js";
+import { FEAScriptModel, plotSolution } from "https://feascript.github.io/FEAScript-core/src/index.js";
 
 // Create a new FEAScript model
 const model = new FEAScriptModel();
@@ -49,7 +49,7 @@ plotSolution(
 );
 ```
 
-Explore various examples and use cases of FEAScript [here](https://github.com/FEAScript/FEAScript/tree/main/examples).
+Explore various examples and use cases of FEAScript [here](https://github.com/FEAScript/FEAScript-core/tree/main/examples).
 
 ## Contribute
 
@@ -57,4 +57,4 @@ We warmly welcome contributors to help expand and refine FEAScript. Please see t
 
 ## License
 
-FEAScript is released under the [MIT license](https://github.com/FEAScript/FEAScript/blob/main/LICENSE). &copy; 2024 FEAScript.
+FEAScript is released under the [MIT license](https://github.com/FEAScript/FEAScript-core/blob/main/LICENSE). &copy; 2024 FEAScript.
