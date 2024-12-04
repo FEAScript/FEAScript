@@ -33,18 +33,15 @@
       The mesh configuration and boundary conditions are defined directly within the JavaScript code in this
       example. Please refresh the page to update the results. Detailed instructions for this example can be
       found in the corresponding
-      <a
-        href="https://feascript.com/tutorials/HeatConduction2DFin.html"
-        target="_blank"
-        >FEAScript tutorial</a
+      <a href="https://feascript.com/tutorials/HeatConduction2DFin.html" target="_blank">FEAScript tutorial</a
       >. If you need further assistance, you can visit the
       <a href="https://feascript.com/" target="_blank">FEAScript website</a>.
     </p>
 
-    <p>
-      FEAScript is distributed under the terms of the
-      <a href="https://github.com/FEAScript/FEAScript-core/blob/main/LICENSE" target="_blank">MIT license</a>. © 2024 FEAScript.
-    </p>
+    <p>&#169; 2023-<span id="currentYear"></span> FEAScript</p>
+    <script>
+      document.getElementById("currentYear").innerHTML = new Date().getFullYear();
+    </script>
 
     <!-- FEAScript module and visualization -->
     <script type="module">
