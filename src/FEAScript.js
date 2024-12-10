@@ -22,6 +22,7 @@ export class FEAScriptModel {
     this.solverConfig = null;
     this.meshConfig = {};
     this.boundaryConditions = {};
+    this.solverMethod = "lusolve"; // Default solver method
   }
 
   setSolverConfig(solverConfig) {
@@ -34,6 +35,10 @@ export class FEAScriptModel {
 
   addBoundaryCondition(boundaryKey, condition) {
     this.boundaryConditions[boundaryKey] = condition;
+  }
+
+  setSolverMethod(solverMethod) {
+    this.solverMethod = solverMethod;
   }
 
   solve() {
@@ -59,7 +64,9 @@ export class FEAScriptModel {
 
     // System solving
     console.time("systemSolving");
-    solutionVector = math.lusolve(jacobianMatrix, residualVector); // Solve the system of linear equations using LU decomposition
+    if (this.solverMethod === "lusolve") {
+      solutionVector = math.lusolve(jacobianMatrix, residualVector); // Solve the system of linear equations using LU decomposition
+    }
     console.timeEnd("systemSolving");
 
     // Return the solution matrix and nodes coordinates

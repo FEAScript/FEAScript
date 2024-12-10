@@ -22,6 +22,9 @@ const model = new FEAScriptModel();
 // Configure the solver
 model.setSolverConfig("solverType"); // e.g., "solidHeatTransfer"
 
+// Set solver method
+model.setSolverMethod("lusolve");
+
 // Define mesh configuration (assuming a rectangular domain for 2D)
 model.setMeshConfig({
   meshDimension: "1D" | "2D", // Mesh dimension

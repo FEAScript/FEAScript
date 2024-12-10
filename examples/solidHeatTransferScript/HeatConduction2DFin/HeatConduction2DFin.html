@@ -61,6 +61,9 @@
         // Set solver configuration
         model.setSolverConfig("solidHeatTransferScript");
 
+        // Set solver method
+        model.setSolverMethod("lusolve");
+
         // Define mesh configuration
         model.setMeshConfig({
           meshDimension: "2D",
