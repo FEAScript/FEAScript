@@ -61,9 +61,6 @@
         // Set solver configuration
         model.setSolverConfig("solidHeatTransferScript");
 
-        // Set solver method
-        model.setSolverMethod("lusolve");
-
         // Define mesh configuration
         model.setMeshConfig({
           meshDimension: "2D",
@@ -79,6 +76,9 @@
         model.addBoundaryCondition("1", ["symmetry"]);
         model.addBoundaryCondition("2", ["convection", 1, 20]);
         model.addBoundaryCondition("3", ["constantTemp", 200]);
+
+        // Set solver method (optional) - 'lusolve' uses LU decomposition
+        model.setSolverMethod("lusolve");
 
         // Solve the problem and get the solution
         const { solutionVector, nodesCoordinates } = model.solve();
