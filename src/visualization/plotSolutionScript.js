@@ -29,13 +29,6 @@ export function plotSolution(
 ) {
   const { nodesXCoordinates, nodesYCoordinates } = nodesCoordinates;
 
-  // Check if the device is in vertical position
-  if (window.innerHeight > window.innerWidth) {
-    document.getElementById(plotDivId).innerHTML =
-      "Cannot draw the results. Please turn your phone to horizontal position to see the results.";
-    return;
-  }
-
   if (meshDimension === "2D" && plotType === "contour") {
     // Calculate the number of nodes along the x-axis and y-axis
     const numNodesX = new Set(nodesXCoordinates).size;
