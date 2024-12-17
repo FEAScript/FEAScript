@@ -34,7 +34,48 @@ export class ThermalBoundaryConditions {
    * @param {array} jacobianMatrix - The Jacobian matrix to be modified
    */
   imposeConstantTempBoundaryConditions(residualVector, jacobianMatrix) {
-    if (this.meshDimension === "2D") {
+    if (this.meshDimension === "1D") {
+      Object.keys(this.boundaryConditions).forEach((boundaryKey) => {
+        if (this.boundaryConditions[boundaryKey][0] === "constantTemp") {
+          const tempValue = this.boundaryConditions[boundaryKey][1];
+          this.boundaryElements[boundaryKey].forEach(([elementIndex, side]) => {
+            if (this.elementOrder === "linear") {
+              const boundarySides = {
+                0: [0], // Node at the left side of the reference element
+                1: [1], // Node at the right side of the reference element
+              };
+              boundarySides[boundaryKey].forEach((nodeIndex) => {
+                const globalNodeIndex = this.nop[elementIndex][nodeIndex] - 1;
+                // Set the residual vector to the ConstantTemp value
+                residualVector[globalNodeIndex] = tempValue;
+                // Set the Jacobian matrix row to zero
+                for (let colIndex = 0; colIndex < residualVector.length; colIndex++) {
+                  jacobianMatrix[globalNodeIndex][colIndex] = 0;
+                }
+                // Set the diagonal entry of the Jacobian matrix to one
+                jacobianMatrix[globalNodeIndex][globalNodeIndex] = 1;
+              });
+            } else if (this.elementOrder === "quadratic") {
+              const boundarySides = {
+                0: [0], // Node at the left side of the reference element
+                2: [2], // Node at the right side of the reference element
+              };
+              boundarySides[boundaryKey].forEach((nodeIndex) => {
+                const globalNodeIndex = this.nop[elementIndex][nodeIndex] - 1;
+                // Set the residual vector to the ConstantTemp value
+                residualVector[globalNodeIndex] = tempValue;
+                // Set the Jacobian matrix row to zero
+                for (let colIndex = 0; colIndex < residualVector.length; colIndex++) {
+                  jacobianMatrix[globalNodeIndex][colIndex] = 0;
+                }
+                // Set the diagonal entry of the Jacobian matrix to one
+                jacobianMatrix[globalNodeIndex][globalNodeIndex] = 1;
+              });
+            }
+          });
+        }
+      });
+    } else if (this.meshDimension === "2D") {
       Object.keys(this.boundaryConditions).forEach((boundaryKey) => {
         if (this.boundaryConditions[boundaryKey][0] === "constantTemp") {
           const tempValue = this.boundaryConditions[boundaryKey][1];
@@ -157,11 +198,9 @@ export class ThermalBoundaryConditions {
                 xCoordinates +=
                   nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunction[nodeIndex];
                 ksiDerivX +=
-                  nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] *
-                  basisFunctionDerivKsi[nodeIndex];
+                  nodesXCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunctionDerivKsi[nodeIndex];
                 etaDerivY +=
-                  nodesYCoordinates[this.nop[elementIndex][nodeIndex] - 1] *
-                  basisFunctionDerivEta[nodeIndex];
+                  nodesYCoordinates[this.nop[elementIndex][nodeIndex] - 1] * basisFunctionDerivEta[nodeIndex];
               }
               for (
                 let localNodeIndex = firstNodeIndex;
@@ -172,11 +211,7 @@ export class ThermalBoundaryConditions {
                 if (side === 0 || side === 2) {
                   // Horizontal boundaries of the domain (assuming a rectangular domain)
                   residualVector[globalNodeIndex] +=
-                    -gaussWeights[0] *
-                    ksiDerivX *
-                    basisFunction[localNodeIndex] *
-                    convectionCoeff *
-                    extTemp;
+                    -gaussWeights[0] * ksiDerivX * basisFunction[localNodeIndex] * convectionCoeff * extTemp;
                   for (
                     let localNodeIndex2 = firstNodeIndex;
                     localNodeIndex2 < lastNodeIndex;
@@ -193,11 +228,7 @@ export class ThermalBoundaryConditions {
                 } else if (side === 1 || side === 3) {
                   // Vertical boundaries of the domain (assuming a rectangular domain)
                   residualVector[globalNodeIndex] +=
-                    -gaussWeights[0] *
-                    etaDerivY *
-                    basisFunction[localNodeIndex] *
-                    convectionCoeff *
-                    extTemp;
+                    -gaussWeights[0] * etaDerivY * basisFunction[localNodeIndex] * convectionCoeff * extTemp;
                   for (
                     let localNodeIndex2 = firstNodeIndex;
                     localNodeIndex2 < lastNodeIndex;
